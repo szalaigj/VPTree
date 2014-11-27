@@ -8,6 +8,7 @@ namespace VPTreeApp.TreeBuilder
 {
     class LeafNode<T, I> : INode<T, I>
         where T : IComparable<T>
+        where I : IComparable<I>
     {
         private I data;
 

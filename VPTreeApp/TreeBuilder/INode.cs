@@ -8,6 +8,7 @@ namespace VPTreeApp.TreeBuilder
 {
     public interface INode<T, I>
         where T : IComparable<T>
+        where I : IComparable<I>
     {
         void print(int level, string direction);
     }

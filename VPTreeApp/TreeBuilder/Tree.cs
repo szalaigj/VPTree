@@ -8,6 +8,7 @@ namespace VPTreeApp.TreeBuilder
 {
     public class Tree<T, I>
         where T : IComparable<T>
+        where I : IComparable<I>
     {
         private INode<T, I> root;
 

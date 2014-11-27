@@ -9,6 +9,7 @@ namespace VPTreeApp.TreeBuilder
 {
     public interface IBuilder<T, I>
         where T : IComparable<T>
+        where I : IComparable<I>
     {
         Tree<T, I> buildTree(List<I> inputData);
     }

@@ -9,6 +9,7 @@ namespace VPTreeApp.TreeBuilder
 {
     public class DefaultBuilder<T, I> : IBuilder<T, I>
         where T : IComparable<T>
+        where I : IComparable<I>
     {
         private IDistance<T, I> distance;
         private IPivotSelector<I> selectionStrategy;
@@ -41,10 +42,16 @@ namespace VPTreeApp.TreeBuilder
                 sortedKeys.Sort();
                 int medianIdx = sortedKeys.Count / 2;
                 List<I> leftInputData = determineDataForSubTree(distanceToData, sortedKeys, 0, medianIdx);
-                List<I> rightInputData = determineDataForSubTree(distanceToData, sortedKeys, medianIdx + 1, sortedKeys.Count - 1);
+                List<I> rightInputData = determineDataForSubTree(distanceToData, sortedKeys,
+                    medianIdx + 1, sortedKeys.Count - 1);
                 INode<T, I> leftNode = doBuildTree(leftInputData);
                 INode<T, I> rightNode = doBuildTree(rightInputData);
-                result = new InnerNode<T, I>(pivotPoint, sortedKeys[0], sortedKeys[0], sortedKeys[0], sortedKeys[0], leftNode, rightNode);
+                T lowerBoundLo = sortedKeys[0];
+                T lowerBoundHi = sortedKeys[medianIdx];
+                T upperBoundLo = (rightNode == null) ? sortedKeys[0] : sortedKeys[medianIdx + 1];
+                T upperBoundHi = sortedKeys[sortedKeys.Count - 1];
+                result = new InnerNode<T, I>(pivotPoint, lowerBoundLo, lowerBoundHi,
+                    upperBoundLo, upperBoundHi, leftNode, rightNode);
             }
             else
             {
@@ -74,7 +81,8 @@ namespace VPTreeApp.TreeBuilder
             return distanceToData;
         }
 
-        private static List<I> determineDataForSubTree(Dictionary<T, List<I>> distanceToData, List<T> sortedKeys, int startIdx, int endIdx)
+        private static List<I> determineDataForSubTree(Dictionary<T, List<I>> distanceToData, 
+            List<T> sortedKeys, int startIdx, int endIdx)
         {
             List<I> result = new List<I>();
             for (int idx = startIdx; idx <= endIdx; idx++)
