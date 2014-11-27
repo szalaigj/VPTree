@@ -19,7 +19,7 @@ namespace VPTreeApp
             IPivotSelector<string> selectionStrategy = new SimplePivotSelector<string>();
             IBuilder<int, string> builder = new DefaultBuilder<int, string>(distance, selectionStrategy);
             List<string> inputData = loader.loadData(args[0]);
-            //int dist = distance.calculateDistance("ATAGCCT", "ACATC");
+            //int dist = distance.calculateDistance("ATGTA", "GCGC");
             Tree<int, string> tree = builder.buildTree(inputData);
             tree.printTree();
             ExactMatchSeeker<int, string> exactMatchSeeker = new ExactMatchSeeker<int, string>(distance);
@@ -41,18 +41,15 @@ namespace VPTreeApp
             }
             Console.WriteLine("Give the query point:");
             queryPoint = Console.ReadLine();
-            Console.WriteLine("Give the number of neighbours of query point which you would like to find at least:");
+            Console.WriteLine("Give the number of neighbours of query point which you would like to find:");
             int kNN = Int32.Parse(Console.ReadLine());
             KNNSeeker<int, string> kNNSeeker = new KNNSeeker<int, string>(distance, (a, b) => a - b);
-            SortedDictionary<int, List<string>> resultDict = kNNSeeker.search(queryPoint, kNN, tree.Root, 10000);
+            List<KeyValuePair<int, string>> resultDict = kNNSeeker.search(queryPoint, kNN, tree.Root, 10000);
             int cnt = 1;
-            foreach (KeyValuePair<int, List<string>> p in resultDict)
+            foreach (KeyValuePair<int, string> p in resultDict)
             {
-                foreach (var record in p.Value)
-                {
-                    Console.WriteLine("{0}. neighbour: {1} with distance {2}", cnt, record, p.Key);
-                    cnt++;
-                }
+                Console.WriteLine("{0}. neighbour: {1} with distance {2}", cnt, p.Value, p.Key);
+                cnt++;
             }
             Console.WriteLine("Press any key to continue...");
             Console.Read();
