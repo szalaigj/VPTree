@@ -47,10 +47,15 @@
     <Compile Include="IOHandler\DataLoader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TreeBuilder\CornerPivotSelector.cs" />
     <Compile Include="TreeBuilder\DefaultBuilder.cs" />
+    <Compile Include="TreeBuilder\SimplePivotSelector.cs" />
     <Compile Include="TreeBuilder\InnerNode.cs" />
     <Compile Include="TreeBuilder\IBuilder.cs" />
     <Compile Include="TreeBuilder\INode.cs" />
+    <Compile Include="TreeBuilder\IPivotSelector.cs" />
+    <Compile Include="TreeBuilder\LeafNode.cs" />
+    <Compile Include="TreeBuilder\RandomWrapper.cs" />
     <Compile Include="TreeBuilder\Tree.cs" />
   </ItemGroup>
   <ItemGroup>

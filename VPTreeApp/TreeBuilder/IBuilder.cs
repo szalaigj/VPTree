@@ -8,9 +8,8 @@ using VPTreeApp.Distance;
 namespace VPTreeApp.TreeBuilder
 {
     public interface IBuilder<T, I>
+        where T : IComparable<T>
     {
-        IDistance<T, I> Distance { get; set; }
-
-        Tree buildTree(List<string> inputData);
+        Tree<T, I> buildTree(List<I> inputData);
     }
 }
