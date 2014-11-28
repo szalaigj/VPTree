@@ -11,12 +11,12 @@ namespace VPTreeApp.TreeBuilder
         where T : IComparable<T>
         where I : IComparable<I>
     {
-        private IDistance<T, I> distance;
-        private IPivotSelector<I> selectionStrategy;
-        
-        public DefaultBuilder(IDistance<T, I> distance, IPivotSelector<I> selectionStrategy)
+        private DistanceAssigner<T, I> distanceAssigner;
+        private IPivotSelector<T, I> selectionStrategy;
+
+        public DefaultBuilder(DistanceAssigner<T, I> distanceAssigner, IPivotSelector<T, I> selectionStrategy)
         {
-            this.distance = distance;
+            this.distanceAssigner = distanceAssigner;
             this.selectionStrategy = selectionStrategy;
         }
 
@@ -37,11 +37,11 @@ namespace VPTreeApp.TreeBuilder
             else if (inputData.Count > 1)
             {
                 I pivotPoint = selectionStrategy.selectPivot(inputData);
-                Dictionary<T, List<I>> distanceToData = assignDistancesToData(inputData, pivotPoint);
+                Dictionary<T, List<I>> distanceToData = distanceAssigner.assignDistancesToData(inputData, pivotPoint);
                 List<T> sortedKeys = distanceToData.Keys.ToList<T>();
                 sortedKeys.Sort();
                 int medianIdx = sortedKeys.Count / 2;
-                List<I> leftInputData = determineDataForSubTree(distanceToData, sortedKeys, 0, medianIdx);
+                List<I> leftInputData = determineDataForSubTree(distanceToData, sortedKeys, 1, medianIdx);
                 List<I> rightInputData = determineDataForSubTree(distanceToData, sortedKeys,
                     medianIdx + 1, sortedKeys.Count - 1);
                 INode<T, I> leftNode = doBuildTree(leftInputData);
@@ -61,25 +61,7 @@ namespace VPTreeApp.TreeBuilder
             return result;
         }
 
-        private Dictionary<T, List<I>> assignDistancesToData(List<I> inputData, I pivotPoint)
-        {
-            Dictionary<T, List<I>> distanceToData = new Dictionary<T, List<I>>();
-            foreach (var item in inputData)
-            {
-                T currentDist = distance.calculateDistance(pivotPoint, item);
-                List<I> currentListValue;
-                if (distanceToData.TryGetValue(currentDist, out currentListValue))
-                {
-                    currentListValue.Add(item);
-                }
-                else
-                {
-                    currentListValue = new List<I>() { item };
-                    distanceToData[currentDist] = currentListValue;
-                }
-            }
-            return distanceToData;
-        }
+        
 
         private static List<I> determineDataForSubTree(Dictionary<T, List<I>> distanceToData, 
             List<T> sortedKeys, int startIdx, int endIdx)

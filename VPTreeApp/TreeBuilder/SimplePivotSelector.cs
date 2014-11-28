@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace VPTreeApp.TreeBuilder
 {
-    public class SimplePivotSelector<I> : IPivotSelector<I>
+    public class SimplePivotSelector<T, I> : IPivotSelector<T, I>
+        where T : IComparable<T>
+        where I : IComparable<I>
     {
         public I selectPivot(List<I> inputData)
         {

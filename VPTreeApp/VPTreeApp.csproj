@@ -44,6 +44,7 @@
     <Compile Include="Algorithm\ExactMatchSeeker.cs" />
     <Compile Include="Algorithm\KNNSeeker.cs" />
     <Compile Include="Algorithm\RangeSeeker.cs" />
+    <Compile Include="Distance\DistanceAssigner.cs" />
     <Compile Include="Distance\IDistance.cs" />
     <Compile Include="Distance\LevenshteinDistance.cs" />
     <Compile Include="IOHandler\DataLoader.cs" />
